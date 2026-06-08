@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard SIMOBS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .dashboard-content { flex: 1; overflow-y: auto; }
+        .dashboard-content::-webkit-scrollbar { width: 0; }
+        body.dark-mode .phone { background: #1a2332 !important; }
+    </style>
+</head>
+<body>
+<div class="phone">
+
+    <div class="dashboard-header">
+        <div class="header-text">
+            <h1>Halo <span>{{ nama }}</span></h1>
+            <p>Ada yang bisa kami bantu hari ini?</p>
+        </div>
+        <div class="header-icons">
+            <a href="/profile" class="profile-link">
+                <i class="fa-regular fa-circle-user"></i>
+            </a>
+            <a href="/notifikasi">
+                <i class="fa-solid fa-bell"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <a href="/booking" class="dashboard-menu">
+            <i class="fa-regular fa-calendar"></i>
+            <span>Booking Servis</span>
+        </a>
+
+        <a href="/status" class="dashboard-menu">
+            <i class="fa-regular fa-clipboard"></i>
+            <span>Cek Status Servis</span>
+        </a>
+
+        <div class="promo-card">
+            <div class="promo-title">Tawaran Spesial</div>
+            <div class="promo-discount">Belum ada tawaran spesial saat ini</div>
+        </div>
+
+        <div class="service-card">
+            <h2>Catatan Servis Terakhir</h2>
+            {% if lastBooking %}
+                <div class="service-row">
+                    <span>Tanggal</span>
+                    <span>{{ lastBooking.tanggal }}</span>
+                </div>
+                <div class="service-row">
+                    <span>Jenis Servis</span>
+                    <span>{{ lastBooking.jenis_servis }}</span>
+                </div>
+                <div class="service-row">
+                    <span>Motor</span>
+                    <span>{{ lastBooking.motor }}</span>
+                </div>
+            {% else %}
+                <div class="service-row">
+                    <span style="color:#c5d0de;">Belum ada catatan servis</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="navbar">
+        <a href="/dashboard" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="/booking" class="nav-item">
+            <i class="fa-solid fa-ticket"></i>
+            <span>Servis</span>
+        </a>
+        <a href="/sparepart" class="nav-item">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Sparepart</span>
+        </a>
+        <a href="/riwayat" class="nav-item">
+            <i class="fa-regular fa-clock"></i>
+            <span>Riwayat</span>
+        </a>
+    </div>
+
+</div>
+<script>
+(function(){ if(localStorage.getItem('darkMode')==='1') document.body.classList.add('dark-mode'); })();
+</script>
+</body>
+</html>

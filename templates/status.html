@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Servis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Tambahan Khusus Halaman Status */
+        body { font-family: 'Poppins', sans-serif; margin: 0; }
+        .phone { background: #f5f7fa; min-height: 100vh; }
+        body.dark-mode .phone { background: #1a2332 !important; }
+        
+        .status-title { font-size: 24px; color: #243B5A; margin: 30px 20px 20px; font-weight: 700; text-align: center; }
+        
+        /* Kartu Status (Ditambah efek hover agar terlihat bisa diklik) */
+        .status-card {
+            background: #fff; border-radius: 16px; padding: 20px;
+            margin: 0 20px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #EEF2F6; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .status-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(74, 111, 165, 0.15); }
+        
+        .booking-id { display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed #EEF2F6; padding-bottom: 12px; margin-bottom: 16px; }
+        .booking-id i { background: #e3f2fd; color: #4A6FA5; padding: 12px; border-radius: 12px; font-size: 18px; }
+        .booking-id h2 { font-size: 16px; color: #243B5A; margin: 0; font-weight: 700; }
+        .booking-id div p { font-size: 11px; color: #8a9bb0; margin: 0 0 2px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .status-grid p { font-size: 12px; color: #8a9bb0; margin: 0 0 4px; font-weight: 500; }
+        .status-grid h3 { font-size: 14px; color: #243B5A; margin: 0; font-weight: 600; text-transform: capitalize; }
+        
+        /* BASE BADGE */
+        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize; }
+        
+        /* WARNA STATUS - MODE TERANG */
+        .status-badge.menunggu { background: #fff3cd; color: #856404; }
+        .status-badge.proses   { background: #cce5ff; color: #004085; }
+        .status-badge.selesai  { background: #d4edda; color: #155724; }
+        .status-badge.batal    { background: #f8d7da; color: #721c24; }
+
+        .estimasi-box { background: #f8f9fa; border-radius: 12px; padding: 14px; text-align: center; margin-top: 16px; border: 1px solid #EEF2F6; }
+        .estimasi-box p { font-size: 12px; color: #8a9bb0; margin: 0 0 4px; font-weight: 500; }
+        .estimasi-box h2 { font-size: 15px; color: #4A6FA5; margin: 0; font-weight: 700; }
+
+        /* WARNA STATUS - MODE GELAP (Penyesuaian kontras teks) */
+        body.dark-mode .status-title { color: #EEF2F6; }
+        body.dark-mode .status-card { background: #243B5A; border-color: #36537C; }
+        body.dark-mode .status-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        body.dark-mode .booking-id { border-color: #36537C; }
+        body.dark-mode .booking-id i { background: #36537C; color: #EEF2F6; }
+        body.dark-mode .booking-id h2, body.dark-mode .status-grid h3 { color: #EEF2F6; }
+        body.dark-mode .estimasi-box { background: #1a2332; border-color: #36537C; }
+        body.dark-mode .estimasi-box h2 { color: #c5d0de; }
+        
+        body.dark-mode .status-badge.menunggu { background: #4d3d11; color: #ffda6a; }
+        body.dark-mode .status-badge.proses   { background: #082d59; color: #6ea8fe; }
+        body.dark-mode .status-badge.selesai  { background: #17422b; color: #75b798; }
+        body.dark-mode .status-badge.batal    { background: #4a151b; color: #ea868f; }
+    </style>
+</head>
+<body>
+<div class="phone">
+    <h1 class="status-title">Status Servis</h1>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+        
+        <div class="status-card" onclick="window.location.href='/detail/{{ booking.id }}'">
+            <div class="booking-id">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <div>
+                    <p>ID Booking</p>
+                    <h2>SVC-2026-<span>{{ booking.id[:4] | upper }}</span></h2>
+                </div>
+            </div>
+            <div class="status-grid">
+                <div>
+                    <p>Jenis Servis</p>
+                    <h3>{{ booking.jenis_servis | default('-') | replace('_', ' ') }}</h3>
+                </div>
+                <div>
+                    <p>Motor</p>
+                    <h3>{{ booking.motor | default('-') }}</h3>
+                </div>
+                <div style="grid-column: span 2;">
+                    <p>Status</p>
+                    
+                    <span class="status-badge {{ booking.status | lower | default('menunggu') }}">
+                        {{ booking.status | default('Menunggu') }}
+                    </span>
+                    
+                </div>
+            </div>
+
+            <div class="estimasi-box">
+                <p><i class="fa-regular fa-calendar" style="margin-right: 5px;"></i> Estimasi Selesai</p>
+                <h2>{{ booking.tanggal | default('-') }}</h2>
+            </div>
+        </div>
+        
+        {% endfor %}
+    {% else %}
+    <div style="text-align: center; padding: 80px 20px; color: #8ba5c4;">
+        <i class="fa-regular fa-circle-xmark" style="font-size: 64px; display: block; margin-bottom: 16px; opacity: 0.3;"></i>
+        <p style="font-family: 'Poppins', sans-serif; font-size: 14px;">Belum ada servis dalam antrian</p>
+    </div>
+    {% endif %}
+
+    <div class="navbar">
+        <a href="/dashboard" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="/booking" class="nav-item">
+            <i class="fa-solid fa-ticket"></i>
+            <span>Servis</span>
+        </a>
+        <a href="/sparepart" class="nav-item">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Sparepart</span>
+        </a>
+        <a href="/riwayat" class="nav-item active">
+            <i class="fa-regular fa-clock"></i>
+            <span>Riwayat</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Memastikan Dark Mode terbaca di Halaman Status
+    (function(){
+        if(localStorage.getItem('darkMode')==='1'){
+            document.body.classList.add('dark-mode');
+        }
+    })();
+</script>
+</body>
+</html>
