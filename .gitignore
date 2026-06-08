@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Runtime/local config
+.env
+*.log
+
+# Firebase / Google Cloud service account keys
+*-firebase-adminsdk-*.json
+*service-account*.json

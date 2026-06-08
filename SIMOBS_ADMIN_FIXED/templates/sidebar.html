@@ -1,0 +1,42 @@
+<ul>
+
+    <li>
+        <a href="/dashboard"
+           class="{% if request.path == '/dashboard' %}active{% endif %}">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+    </li>
+
+    <li>
+        <a href="/pelanggan"
+           class="{% if request.path == '/pelanggan' %}active{% endif %}">
+            <i class="fas fa-users"></i>
+            Pelanggan
+        </a>
+    </li>
+
+    <li>
+        <a href="/booking"
+           class="{% if request.path == '/booking' %}active{% endif %}">
+            <i class="fas fa-wrench"></i>
+            Booking
+        </a>
+    </li>
+
+    <li>
+        <a href="/sparepart"
+           class="{% if request.path == '/sparepart' %}active{% endif %}">
+            <i class="fas fa-box"></i>
+            Sparepart
+        </a>
+    </li>
+
+    <li>
+        <a href="/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </a>
+    </li>
+
+</ul>

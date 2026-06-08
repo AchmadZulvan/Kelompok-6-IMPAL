@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+
+# Firebase service account key (jangan di-commit)
+*-firebase-adminsdk-*.json
+simobs-bengkel-firebase-adminsdk-fbsvc-8a002d20de.json
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/

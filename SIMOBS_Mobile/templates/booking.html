@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Servis - SIMOBS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== BASE (PERBAIKAN BACKGROUND LUAR) ===== */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            background: #5c6e80; /* Warna slate/biru gelap untuk luar area HP */
+        }
+        .phone { 
+            background: #ffffff; /* Warna putih HANYA untuk di dalam area HP */
+            min-height: 100vh; 
+        }
+        body.dark-mode .phone { 
+            background: #1a2332 !important; 
+        }
+
+        /* ===== BOOKING HEADER ===== */
+        .booking-header { padding: 40px 24px 20px; text-align: center; background: #EEF2F6; position: relative; }
+        .booking-header h1 { font-size: 24px; color: #243B5A; margin: 0 0 5px; font-weight: 700; }
+        .booking-header p { font-size: 13px; color: #8a9bb0; margin: 0; }
+        .back-btn { position: absolute; left: 24px; top: 44px; color: #243B5A; font-size: 20px; text-decoration: none; }
+        
+        /* ===== FORM STYLING ===== */
+        .booking-form { padding: 24px; }
+        .booking-section-title { font-size: 13px; font-weight: 700; color: #4A6FA5; margin: 0 0 16px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .booking-input-group { margin-bottom: 20px; }
+        .booking-input-group label { display: block; font-size: 13px; color: #243B5A; font-weight: 600; margin-bottom: 8px; }
+        
+        .booking-input-box {
+            display: flex; align-items: center; background: #f8f9fa;
+            border: 1.5px solid #EEF2F6; border-radius: 14px; padding: 0 16px; transition: 0.3s;
+        }
+        .booking-input-box:focus-within { border-color: #4A6FA5; background: #fff; box-shadow: 0 4px 10px rgba(74, 111, 165, 0.1); }
+        .booking-input-box i { color: #8a9bb0; font-size: 16px; margin-right: 12px; width: 20px; text-align: center; }
+        
+        .booking-input-box input, .booking-input-box select, .booking-input-box textarea {
+            flex: 1; border: none; padding: 14px 0; font-size: 14px; outline: none; background: transparent;
+            font-family: 'Poppins', sans-serif; color: #243B5A; font-weight: 500;
+        }
+        .booking-textarea-box { align-items: flex-start; padding-top: 14px; }
+        
+        .btn-submit {
+            display: block; width: 100%; background: #4A6FA5; color: white; border: none;
+            padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; font-family: 'Poppins', sans-serif; margin-top: 30px; box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+        }
+        .btn-submit:hover { background: #36537C; }
+        .btn-submit:active { transform: scale(0.98); }
+
+        /* ====== DARK MODE OVERRIDES ===== */
+        body.dark-mode .booking-header { background: #1a2332; }
+        body.dark-mode .booking-header h1, body.dark-mode .back-btn { color: #EEF2F6; }
+        body.dark-mode .booking-input-group label { color: #EEF2F6; }
+        body.dark-mode .booking-input-box { background: #243B5A; border-color: #36537C; }
+        body.dark-mode .booking-input-box:focus-within { border-color: #4A6FA5; background: #1a2332; }
+        body.dark-mode .booking-input-box input, body.dark-mode .booking-input-box select, body.dark-mode .booking-input-box textarea { color: #EEF2F6; }
+        body.dark-mode .booking-input-box i { color: #8ba5c4; }
+    </style>
+</head>
+<body>
+<div class="phone">
+
+    <div class="booking-header">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1>Booking Servis</h1>
+        <p>Lengkapi detail pesanan servis</p>
+    </div>
+
+    <form action="/do_booking" method="POST" class="booking-form">
+
+        <div class="booking-section-title">Kendaraan</div>
+
+        <div class="booking-input-group">
+            <label>Jenis Motor</label>
+            <div class="booking-input-box">
+                <i class="fa-solid fa-motorcycle"></i>
+                <input type="text" name="motor" placeholder="Cth: Honda Vario 160" required>
+            </div>
+        </div>
+
+        <div class="booking-input-group">
+            <label>Plat Nomor</label>
+            <div class="booking-input-box">
+                <i class="fa-solid fa-id-card"></i>
+                <input type="text" name="plat" placeholder="Cth: B 1234 XYZ" required>
+            </div>
+        </div>
+
+        <div class="booking-section-title" style="margin-top: 30px;">Detail Servis</div>
+
+        <div class="booking-input-group">
+            <label>Jenis Servis</label>
+            <div class="booking-input-box">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <select name="jenis_servis" required>
+                    <option value="" disabled selected>Pilih jenis servis</option>
+                    <option value="Servis Ringan">Servis Ringan</option>
+                    <option value="Servis Penuh">Servis Penuh</option>
+                    <option value="Ganti Oli">Ganti Oli</option>
+                    <option value="Tune Up">Tune Up</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="booking-input-group">
+            <label>Tanggal Booking</label>
+            <div class="booking-input-box">
+                <i class="fa-solid fa-calendar"></i>
+                <input type="date" name="tanggal" required>
+            </div>
+        </div>
+        
+        <div class="booking-input-group">
+            <label>Slot Waktu</label>
+            <div class="booking-input-box">
+                <i class="fa-solid fa-clock"></i>
+                <select name="waktu" required>
+                    <option value="" disabled selected>Pilih slot waktu</option>
+                    <option value="08:00">08:00 WIB</option>
+                    <option value="10:00">10:00 WIB</option>
+                    <option value="13:00">13:00 WIB</option>
+                    <option value="15:00">15:00 WIB</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="booking-input-group">
+            <label>Keluhan</label>
+            <div class="booking-input-box booking-textarea-box">
+                <i class="fa-solid fa-comment-dots"></i>
+                <textarea name="keluhan" placeholder="Deskripsikan keluhan motor..." rows="3"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Konfirmasi Booking</button>
+
+    </form>
+
+</div>
+
+<script>
+    // Memastikan Dark Mode terbaca di Halaman Booking
+    (function(){
+        if(localStorage.getItem('darkMode')==='1'){
+            document.body.classList.add('dark-mode');
+        }
+    })();
+</script>
+</body>
+</html>

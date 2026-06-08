@@ -1,0 +1,73 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="search-bar mb-3">
+    <form method="GET" style="display:flex; gap:10px;">
+        <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="🔍 Cari booking..."
+            value="{{ keyword if keyword else '' }}"
+        >
+        <button class="btn btn-primary">Cari</button>
+        <a href="/booking" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
+<div class="table-box">
+
+    <div class="table-header">
+        <div>
+            <h2>Data Booking</h2>
+            <p class="table-subtitle">Daftar seluruh booking servis</p>
+        </div>
+        <a href="/tambah_booking" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Tambah Booking
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:55px;">No</th>
+                <th>Pelanggan</th>
+                <th>Motor</th>
+                <th>Keluhan</th>
+                <th>Mekanik</th>
+                <th style="width:120px;">Status</th>
+                <th style="width:140px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for b in data %}
+        <tr>
+            <td class="td-center">{{ loop.index }}</td>
+            <td>{{ b[1] }}</td>
+            <td>{{ b[2] }}</td>
+            <td>{{ b[3] }}</td>
+            <td>{{ b[4] }}</td>
+            <td>
+                {% if b[5]|lower in ['selesai', 'done', 'completed'] %}
+                    <span class="badge badge-success">{{ b[5] }}</span>
+                {% elif b[5]|lower in ['proses', 'diproses', 'pending'] %}
+                    <span class="badge badge-warning">{{ b[5] }}</span>
+                {% else %}
+                    <span class="badge badge-default">{{ b[5] }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="/edit_booking/{{ b[0] }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="/hapus_booking/{{ b[0] }}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Hapus data booking ini?')">Hapus</a>
+                <a href="/detail_booking/{{ b[0] }}" class="btn btn-info btn-sm">Detail</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
