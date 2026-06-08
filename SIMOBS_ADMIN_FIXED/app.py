@@ -167,11 +167,6 @@ def dashboard():
     except Exception:
         total_admin = 0
 
-    try:
-        total_cs = len(list(db.collection('customer_service').stream()))
-    except Exception:
-        total_cs = 0
-
     return render_template(
      'dashboard.html',
     admin=session.get('admin', ''),
@@ -180,8 +175,7 @@ def dashboard():
     pelanggan=total_pelanggan,
     booking=total_booking,
     sparepart=total_sparepart,
-    total_admin=total_admin,
-    total_cs=total_cs
+    total_admin=total_admin
 )
 
 
@@ -548,75 +542,6 @@ def detail_booking(id):
         sparepart=sparepart,
         total=total
     )
-
-# =========================
-# CUSTOMER SERVICE
-# =========================
-
-@app.route('/customer_service')
-def customer_service():
-
-    if 'admin' not in session:
-        return redirect('/login')
-
-    try:
-        docs = list(
-            db.collection('customer_service')
-            .order_by('created_at', direction=firestore.Query.DESCENDING)
-            .stream()
-        )
-    except Exception:
-        # Fallback (no index / created_at missing)
-        docs = list(db.collection('customer_service').stream())
-
-    data = []
-    for d in docs:
-        row = _doc_to_tuple(d, ['nama_pelanggan', 'telepon', 'keluhan', 'status', 'tanggal'])
-        # Ensure tanggal exists for older docs
-        if not row[5]:
-            data.append((row[0], row[1], row[2], row[3], row[4], _now_string()))
-        else:
-            data.append(row)
-
-    return render_template(
-        'customer_service.html',
-        data=data
-    )
-
-
-@app.route('/tambah_customer_service',
-methods=['GET', 'POST'])
-def tambah_customer_service():
-
-    if request.method == 'POST':
-        _, doc_ref = db.collection('customer_service').add({
-            'nama_pelanggan': request.form['nama_pelanggan'],
-            'telepon': request.form['telepon'],
-            'keluhan': request.form['keluhan'],
-            'status': request.form['status'],
-            'tanggal': _now_string(),
-            'created_at': firestore.SERVER_TIMESTAMP,
-        })
-        app.logger.info(
-            "Firestore add customer_service id=%s project=%s",
-            doc_ref.id,
-            _firestore_project_id(),
-        )
-
-        return redirect('/customer_service')
-
-    return render_template(
-        'tambah_customer_service.html'
-    )
-
-
-@app.route('/hapus_customer_service/<id>')
-def hapus_customer_service(id):
-
-    db.collection('customer_service').document(id).delete()
-
-    return redirect('/customer_service')
-
 
 # =========================
 # RUN

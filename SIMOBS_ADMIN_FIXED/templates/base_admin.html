@@ -53,13 +53,6 @@
         </li>
 
         <li>
-            <a href="/customer_service" class="{{ 'active' if request.path.startswith('/customer_service') else '' }}">
-                <i class="fa fa-headset"></i>
-                Customer Service
-            </a>
-        </li>
-
-        <li>
             <a href="/logout">
                 <i class="fa fa-sign-out-alt"></i>
                 Logout
@@ -84,8 +77,6 @@
                     <i class="fa fa-wrench"></i>
                 {% elif request.path.startswith('/sparepart') or request.path.startswith('/tambah_sparepart') or request.path.startswith('/edit_sparepart') %}
                     <i class="fa fa-box"></i>
-                {% elif request.path.startswith('/customer_service') %}
-                    <i class="fa fa-headset"></i>
                 {% elif request.path.startswith('/admin') %}
                     <i class="fa fa-user-shield"></i>
                 {% elif request.path.startswith('/profil') %}
@@ -104,8 +95,6 @@
                         Booking
                     {% elif request.path.startswith('/sparepart') or request.path.startswith('/tambah_sparepart') or request.path.startswith('/edit_sparepart') %}
                         Sparepart
-                    {% elif request.path.startswith('/customer_service') %}
-                        Customer Service
                     {% elif request.path.startswith('/admin') %}
                         Admin
                     {% elif request.path.startswith('/profil') %}
@@ -123,8 +112,6 @@
                         Manajemen Data Booking
                     {% elif request.path.startswith('/sparepart') %}
                         Manajemen Data Sparepart
-                    {% elif request.path.startswith('/customer_service') %}
-                        Manajemen Customer Service
                     {% elif request.path.startswith('/admin') %}
                         Manajemen Admin
                     {% else %}
