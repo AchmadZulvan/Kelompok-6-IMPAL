@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>SIMOBS</title>
+    <meta name="viewport" content="width=402, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body.dark-mode .phone { background: #1a2332 !important; }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <script>
+        (function(){ if(localStorage.getItem('darkMode')==='1') document.body.classList.add('dark-mode'); })();
+    </script>
+    <div class="phone">
+        {% block content %}{% endblock %}
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

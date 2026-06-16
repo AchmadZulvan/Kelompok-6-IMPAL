@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - SIMOBS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body.dark-mode .phone { background: #1a2332 !important; }
+        /* ===== HEADER ===== */
+        .profile-header { padding: 44px 24px 28px; background: #EEF2F6; }
+        .profile-back { display: inline-block; color: #243B5A; font-size: 24px; text-decoration: none; margin-bottom: 16px; }
+        .profile-header h1 { font-size: 36px; font-weight: 700; color: #243B5A; }
+        /* ===== PROFILE CARD ===== */
+        .profile-card { width: 90%; margin: 0 auto 20px; background: #36537C; border-radius: 24px; padding: 20px 22px; display: flex; align-items: center; gap: 16px; }
+        .profile-avatar-wrap { width: 60px; height: 60px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .profile-avatar-wrap i { font-size: 36px; color: #fff; }
+        .profile-info { flex: 1; min-width: 0; }
+        .profile-info h2 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .info-email { font-size: 13px; color: #c5d0de; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .info-hp    { font-size: 13px; color: #8ba5c4; }
+        /* ===== SECTION TITLE ===== */
+        .section-title { width: 90%; margin: 8px auto 10px; font-size: 13px; font-weight: 700; color: #8a9bb0; letter-spacing: 1px; text-transform: uppercase; }
+        /* ===== SETTING CARD ===== */
+        .setting-card { width: 90%; margin: 0 auto; background: #36537C; border-radius: 0; display: flex; align-items: center; gap: 16px; padding: 18px 22px; text-decoration: none; color: #fff; font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif; transition: background 0.2s; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .setting-card:first-of-type { border-radius: 22px 22px 0 0; }
+        .setting-card:last-of-type  { border-radius: 0 0 22px 22px; border-bottom: none; }
+        .setting-card:only-of-type  { border-radius: 22px; }
+        .setting-card-group { width: 90%; margin: 0 auto 16px; background: #36537C; border-radius: 22px; overflow: hidden; }
+        .setting-card-group a { display: flex; align-items: center; gap: 16px; padding: 18px 22px; text-decoration: none; color: #fff; font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif; transition: background 0.2s; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .setting-card-group a:last-child { border-bottom: none; }
+        .setting-card-group a:hover { background: #4A6FA5; }
+        .setting-card-group a i { font-size: 22px; width: 26px; text-align: center; }
+        /* ===== LOGOUT ===== */
+        .logout-btn { width: 90%; height: 60px; margin: 16px auto 36px; border: 2px solid #e53e3e; border-radius: 22px; display: flex; justify-content: center; align-items: center; gap: 12px; text-decoration: none; color: #e53e3e; font-size: 16px; font-weight: 600; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .logout-btn:hover { background: rgba(229,62,62,0.08); }
+        /* ===== MODAL ===== */
+        .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; border-radius: 40px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { width: 88%; background: #fff; border-radius: 26px; padding: 26px 22px; max-height: 82%; overflow-y: auto; }
+        .modal-box::-webkit-scrollbar { width: 0; }
+        .modal-title  { font-size: 20px; font-weight: 700; color: #243B5A; margin-bottom: 16px; }
+        .form-group   { margin-bottom: 13px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: #36537C; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; height: 50px; border: 1.5px solid #c5d0de; border-radius: 14px; padding: 0 14px; font-size: 14px; color: #243B5A; font-family: 'Poppins', sans-serif; outline: none; background: #EEF2F6; box-sizing: border-box; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: #4A6FA5; background: #fff; }
+        .modal-btn-row { display: flex; gap: 10px; margin-top: 16px; }
+        .modal-btn-row button { flex: 1; height: 48px; border: none; border-radius: 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .btn-cancel  { background: #EEF2F6; color: #243B5A; }
+        .btn-confirm { background: #4A6FA5; color: #fff; }
+        .modal-single-btn { width: 100%; height: 48px; margin-top: 14px; border: none; border-radius: 14px; background: #4A6FA5; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; display: block; }
+        /* Motor card */
+        .motor-card { width: 90%; margin: 0 auto 12px; background: #c5d0de; border-radius: 22px; padding: 20px 22px; }
+        .motor-empty { text-align: center; padding: 18px 0 10px; color: #8a9bb0; font-size: 14px; }
+        .motor-empty i { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.35; }
+        .motor-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .motor-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .motor-row:first-child { padding-top: 0; }
+        .motor-row span:first-child { font-size: 14px; color: #36537C; }
+        .motor-row span:last-child  { font-size: 14px; font-weight: 600; color: #243B5A; }
+        .edit-motor-btn { width: 90%; height: 52px; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; gap: 10px; background: #EEF2F6; border: 2px dashed #8a9bb0; border-radius: 18px; cursor: pointer; font-size: 15px; font-weight: 600; color: #4A6FA5; font-family: 'Poppins', sans-serif; transition: border-color 0.2s, background 0.2s; }
+        .edit-motor-btn:hover { border-color: #4A6FA5; background: #dde5f0; }
+        /* bantuan */
+        .bantuan-card { background: #EEF2F6; border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; text-decoration: none; }
+        .bantuan-card i { font-size: 22px; width: 26px; text-align: center; }
+        .bantuan-card .lbl { font-size: 14px; font-weight: 700; color: #243B5A; font-family: 'Poppins', sans-serif; }
+        .bantuan-card .sub { font-size: 12px; color: #36537C; font-family: 'Poppins', sans-serif; }
+        .privasi-text { font-size: 13px; color: #36537C; line-height: 1.75; }
+        .privasi-text strong { display: block; color: #243B5A; font-size: 14px; margin: 12px 0 4px; }
+        /* Toast */
+        .toast { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: #243B5A; color: #fff; padding: 11px 22px; border-radius: 30px; font-size: 13px; opacity: 0; transition: all 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        /* ===== DARK MODE ===== */
+        body.dark-mode .profile-header    { background: #1a2332; }
+        body.dark-mode .profile-header h1 { color: #EEF2F6; }
+        body.dark-mode .profile-back      { color: #EEF2F6; }
+        body.dark-mode .section-title     { color: #8ba5c4; }
+        body.dark-mode .setting-card-group { background: #243B5A; }
+        body.dark-mode .setting-card-group a { color: #EEF2F6; border-bottom-color: rgba(255,255,255,0.06); }
+        body.dark-mode .setting-card-group a:hover { background: #36537C; }
+        body.dark-mode .logout-btn        { border-color: #ff4d4d; color: #ff4d4d; }
+        body.dark-mode .motor-card        { background: #243B5A; }
+        body.dark-mode .motor-row span:first-child { color: #8ba5c4; }
+        body.dark-mode .motor-row span:last-child  { color: #EEF2F6; }
+        body.dark-mode .motor-empty       { color: #8ba5c4; }
+        body.dark-mode .edit-motor-btn    { background: #1a2332; border-color: #36537C; color: #8ba5c4; }
+        body.dark-mode .modal-box         { background: #243B5A; }
+        body.dark-mode .modal-title       { color: #EEF2F6; }
+        body.dark-mode .form-group label  { color: #c5d0de; }
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select { background: #36537C; color: #EEF2F6; border-color: #4A6FA5; }
+        body.dark-mode .btn-cancel        { background: #36537C; color: #EEF2F6; }
+        body.dark-mode .bantuan-card      { background: #36537C; }
+        body.dark-mode .bantuan-card .lbl { color: #EEF2F6; }
+        body.dark-mode .bantuan-card .sub { color: #c5d0de; }
+        body.dark-mode .privasi-text      { color: #c5d0de; }
+        body.dark-mode .privasi-text strong { color: #EEF2F6; }
+    </style>
+</head>
+<body>
+<div class="phone">
+
+    <div class="profile-header">
+        <a href="/dashboard" class="profile-back">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1>Profil</h1>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-avatar-wrap">
+            <i class="fa-solid fa-circle-user"></i>
+        </div>
+        <div class="profile-info">
+            <h2 id="displayNama">{{ user.nama }}</h2>
+            <div class="info-email" id="displayEmail">{{ user.email }}</div>
+            <div class="info-hp" id="displayHp">{{ user.no_hp if user.no_hp else 'Belum diisi' }}</div>
+        </div>
+        <div style="width:40px; height:40px; background:rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" onclick="openModal('modalEditProfil')">
+            <i class="fa-solid fa-pen" style="font-size:15px; color:#fff;"></i>
+        </div>
+    </div>
+
+    <div class="section-title">Detail Motor</div>
+
+    <div class="motor-card" id="motorCard">
+        <div class="motor-empty" id="motorEmpty">
+            <i class="fa-solid fa-motorcycle"></i>
+            Data motor belum diisi
+        </div>
+        <div id="motorData" style="display:none;">
+            <div class="motor-row"><span>Model</span><span id="mModel">—</span></div>
+            <div class="motor-row"><span>Tahun</span><span id="mTahun">—</span></div>
+            <div class="motor-row"><span>No. Polisi</span><span id="mPlat">—</span></div>
+            <div class="motor-row"><span>Warna</span><span id="mWarna">—</span></div>
+            <div class="motor-row"><span>Terakhir Servis</span><span id="mServis">—</span></div>
+        </div>
+    </div>
+
+    <div class="edit-motor-btn" id="motorBtn" onclick="openModal('modalMotor')">
+        <i class="fa-solid fa-plus" id="motorBtnIcon"></i>
+        <span id="motorBtnText">Tambah Data Motor</span>
+    </div>
+
+    <div class="section-title">Setting Akun</div>
+
+    <div class="setting-card-group">
+        <a href="/setting">
+            <i class="fa-solid fa-gear"></i>
+            Pengaturan
+        </a>
+        <a href="/notifikasi">
+            <i class="fa-solid fa-bell"></i>
+            Notifikasi
+        </a>
+        <a href="#" onclick="openModal('modalPrivasi'); return false;">
+            <i class="fa-solid fa-lock"></i>
+            Privasi &amp; Keamanan
+        </a>
+        <a href="#" onclick="openModal('modalBantuan'); return false;">
+            <i class="fa-regular fa-circle-question"></i>
+            Bantuan &amp; Dukungan
+        </a>
+    </div>
+
+    <a href="/logout" class="logout-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Keluar
+    </a>
+
+    <div class="modal-overlay" id="modalEditProfil">
+        <div class="modal-box">
+            <div class="modal-title">Edit Profil</div>
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="editNama" placeholder="Nama lengkap Anda">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" placeholder="Email Anda">
+            </div>
+            <div class="form-group">
+                <label>Nomor HP</label>
+                <input type="tel" id="editHp" placeholder="Nomor HP Anda">
+            </div>
+            <div class="modal-btn-row">
+                <button class="btn-cancel" onclick="closeModal('modalEditProfil')">Batal</button>
+                <button class="btn-confirm" onclick="simpanProfil()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalMotor">
+        <div class="modal-box">
+            <div class="modal-title">Data Motor</div>
+            <div class="form-group">
+                <label>Model Motor</label>
+                <select id="inputModel">
+                    <option value="">-- Pilih Model --</option>
+                    <optgroup label="Honda">
+                        <option>Honda Beat</option><option>Honda Vario 125</option>
+                        <option>Honda Vario 150</option><option>Honda PCX 160</option>
+                        <option>Honda Scoopy</option><option>Honda CB150R</option>
+                        <option>Honda Supra X 125</option><option>Honda Revo</option>
+                    </optgroup>
+                    <optgroup label="Yamaha">
+                        <option>Yamaha NMAX</option><option>Yamaha Aerox</option>
+                        <option>Yamaha Mio M3</option><option>Yamaha Fino</option>
+                        <option>Yamaha R15</option><option>Yamaha MT-15</option>
+                        <option>Yamaha Vixion</option>
+                    </optgroup>
+                    <optgroup label="Kawasaki">
+                        <option>Kawasaki Ninja 250</option><option>Kawasaki KLX 150</option>
+                        <option>Kawasaki Z250</option>
+                    </optgroup>
+                    <optgroup label="Suzuki">
+                        <option>Suzuki GSX-R150</option><option>Suzuki Satria FU</option>
+                        <option>Suzuki Address</option>
+                    </optgroup>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tahun Pembuatan</label>
+                <select id="inputTahun"><option value="">-- Pilih Tahun --</option></select>
+            </div>
+            <div class="form-group">
+                <label>Nomor Polisi</label>
+                <input type="text" id="inputPlat" placeholder="Contoh: B 1234 ABC" style="text-transform:uppercase;">
+            </div>
+            <div class="form-group">
+                <label>Warna Motor</label>
+                <input type="text" id="inputWarna" placeholder="Contoh: Hitam, Putih, Biru">
+            </div>
+            <div class="form-group">
+                <label>Terakhir Servis</label>
+                <input type="date" id="inputServis">
+            </div>
+            <div class="modal-btn-row">
+                <button class="btn-cancel" onclick="closeModal('modalMotor')">Batal</button>
+                <button class="btn-confirm" onclick="simpanMotor()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalPrivasi">
+        <div class="modal-box">
+            <div class="modal-title">Privasi &amp; Keamanan</div>
+            <div class="privasi-text">
+                <strong>Keamanan Akun</strong>
+                Akun Anda dilindungi dengan sistem OTP dua langkah yang dikirim ke email terdaftar setiap kali login.
+                <strong>Data Anda</strong>
+                Kami hanya mengumpulkan data yang diperlukan untuk layanan servis. Data tidak dijual atau dibagikan ke pihak ketiga.
+                <strong>Enkripsi</strong>
+                Semua data sensitif disimpan dengan enkripsi dan diakses melalui koneksi aman (HTTPS).
+                <strong>Hapus Akun</strong>
+                Untuk menghapus akun, hubungi bengkel langsung atau kirim email ke simobs@bengkel.id.
+            </div>
+            <div class="modal-btn-row">
+                <button class="btn-confirm" onclick="closeModal('modalPrivasi')" style="flex:1;">Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalBantuan">
+        <div class="modal-box">
+            <div class="modal-title">Bantuan &amp; Dukungan</div>
+            <a href="tel:+62812345678" class="bantuan-card">
+                <i class="fa-solid fa-phone" style="color:#4A6FA5;"></i>
+                <div><div class="lbl">Telepon Bengkel</div><div class="sub">+62 812-3456-78</div></div>
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" class="bantuan-card">
+                <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i>
+                <div><div class="lbl">WhatsApp</div><div class="sub">Chat langsung dengan mekanik</div></div>
+            </a>
+            <a href="mailto:simobs@bengkel.id" class="bantuan-card">
+                <i class="fa-solid fa-envelope" style="color:#4A6FA5;"></i>
+                <div><div class="lbl">Email</div><div class="sub">simobs@bengkel.id</div></div>
+            </a>
+            <div class="bantuan-card">
+                <i class="fa-solid fa-clock" style="color:#4A6FA5;"></i>
+                <div><div class="lbl">Jam Operasional</div><div class="sub">Senin–Sabtu, 08.00–17.00 WIB</div></div>
+            </div>
+            <div class="modal-btn-row" style="margin-top:6px;">
+                <button class="btn-confirm" onclick="closeModal('modalBantuan')" style="flex:1;">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* DARK MODE */
+if(localStorage.getItem('darkMode')==='1') document.body.classList.add('dark-mode');
+
+/* MODAL */
+function openModal(id) {
+    if(id==='modalEditProfil'){
+        document.getElementById('editNama').value  = document.getElementById('displayNama').textContent;
+        document.getElementById('editEmail').value = document.getElementById('displayEmail').textContent;
+        const hp = document.getElementById('displayHp').textContent;
+        document.getElementById('editHp').value = (hp==='Belum diisi') ? '' : hp;
+    }
+    if(id==='modalMotor'){
+        const motor = JSON.parse(localStorage.getItem('motorData')||'{}');
+        if(motor.model)  document.getElementById('inputModel').value  = motor.model;
+        if(motor.tahun)  document.getElementById('inputTahun').value  = motor.tahun;
+        if(motor.plat)   document.getElementById('inputPlat').value   = motor.plat;
+        if(motor.warna)  document.getElementById('inputWarna').value  = motor.warna;
+        if(motor.servis) document.getElementById('inputServis').value = motor.servis;
+    }
+    document.getElementById(id).classList.add('show');
+}
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+    el.addEventListener('click',function(e){ if(e.target===this) closeModal(this.id); });
+});
+
+/* TOAST */
+function showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* TAHUN SELECT */
+const tahunSelect=document.getElementById('inputTahun');
+const tahunNow=new Date().getFullYear();
+for(let y=tahunNow; y>=1990; y--){
+    const opt=document.createElement('option');
+    opt.value=y; opt.textContent=y;
+    tahunSelect.appendChild(opt);
+}
+
+/* SIMPAN PROFIL */
+function simpanProfil(){
+    const nama=document.getElementById('editNama').value.trim();
+    const email=document.getElementById('editEmail').value.trim();
+    const hp=document.getElementById('editHp').value.trim();
+    if(!nama||!email){ showToast('⚠️ Nama dan email wajib diisi'); return; }
+    document.getElementById('displayNama').textContent  = nama;
+    document.getElementById('displayEmail').textContent = email;
+    document.getElementById('displayHp').textContent   = hp||'Belum diisi';
+    closeModal('modalEditProfil');
+    showToast('✅ Profil berhasil disimpan');
+}
+
+/* MOTOR DATA */
+function loadMotorData(){
+    const motor=JSON.parse(localStorage.getItem('motorData')||'{}');
+    if(motor.model){
+        document.getElementById('motorEmpty').style.display='none';
+        document.getElementById('motorData').style.display='block';
+        document.getElementById('mModel').textContent=motor.model;
+        document.getElementById('mTahun').textContent=motor.tahun;
+        document.getElementById('mPlat').textContent=motor.plat;
+        document.getElementById('mWarna').textContent=motor.warna||'—';
+        if(motor.servis){
+            const d=new Date(motor.servis);
+            document.getElementById('mServis').textContent=d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+        } else {
+            document.getElementById('mServis').textContent='Belum ada data';
+        }
+        document.getElementById('motorBtnIcon').className='fa-solid fa-pen';
+        document.getElementById('motorBtnText').textContent='Edit Data Motor';
+    } else {
+        document.getElementById('motorEmpty').style.display='block';
+        document.getElementById('motorData').style.display='none';
+        document.getElementById('motorBtnIcon').className='fa-solid fa-plus';
+        document.getElementById('motorBtnText').textContent='Tambah Data Motor';
+    }
+}
+function simpanMotor(){
+    const model=document.getElementById('inputModel').value;
+    const tahun=document.getElementById('inputTahun').value;
+    const plat=document.getElementById('inputPlat').value.trim().toUpperCase();
+    const warna=document.getElementById('inputWarna').value.trim();
+    const servis=document.getElementById('inputServis').value;
+    if(!model||!tahun||!plat){ showToast('⚠️ Model, tahun, dan no. polisi wajib diisi'); return; }
+    localStorage.setItem('motorData',JSON.stringify({model,tahun,plat,warna,servis}));
+    closeModal('modalMotor');
+    loadMotorData();
+    showToast('✅ Data motor berhasil disimpan');
+}
+loadMotorData();
+</script>
+</body>
+</html>

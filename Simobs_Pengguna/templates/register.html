@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi SIMOBS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="phone">
+
+    <a href="/login" class="register-back">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="register-container">
+
+        <div class="auth-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SIMOBS">
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div style="color:red; text-align:center; margin-bottom:15px; font-weight:bold;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="POST" class="register-form">
+
+            <input type="text" name="nama" placeholder="Nama Lengkap" required>
+            <input type="text" name="email" placeholder="Alamat Email" required>
+            <input type="text" name="no_hp" placeholder="Nomor Telepon (Opsional)">
+
+            <div class="password-box">
+                <input type="password" id="password" name="password" placeholder="Kata Sandi Baru" required>
+                <i class="fa-regular fa-eye eye-icon" onclick="togglePassword('password', this)"></i>
+            </div>
+
+            <div class="password-box">
+                <input type="password" id="konfirmasi" name="konfirmasi" placeholder="Konfirmasi Kata Sandi" required>
+                <i class="fa-regular fa-eye eye-icon" onclick="togglePassword('konfirmasi', this)"></i>
+            </div>
+
+            <button type="submit">Daftar</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+function togglePassword(id, icon){
+    const input = document.getElementById(id);
+    if(input.type === "password"){
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+</script>
+</body>
+</html>

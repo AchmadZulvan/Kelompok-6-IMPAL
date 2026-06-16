@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Servis - SIMOBS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body.dark-mode .phone { background: #1a2332 !important; }
+        .riwayat-header { padding: 44px 24px 28px; background: #36537C; flex-shrink: 0; }
+        .riwayat-back { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 50%; color: #fff; font-size: 18px; text-decoration: none; margin-bottom: 14px; }
+        .riwayat-header h1 { font-size: 32px; font-weight: 700; color: #fff; }
+        .riwayat-content { flex: 1; overflow-y: auto; padding: 14px 16px 20px; }
+        .riwayat-content::-webkit-scrollbar { width: 0; }
+        .riwayat-card { display: flex; align-items: center; gap: 14px; background: #36537C; border-radius: 18px; padding: 16px 18px; margin-bottom: 10px; cursor: pointer; transition: opacity 0.2s; } .riwayat-card:hover { opacity: 0.85; }
+        .riwayat-icon { width: 44px; height: 44px; border-radius: 13px; background: #4A6FA5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .riwayat-icon i { font-size: 20px; color: #fff; }
+        .riwayat-info { flex: 1; min-width: 0; }
+        .riwayat-info h2 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .riwayat-info .ri-meta { font-size: 12px; color: #c5d0de; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .riwayat-info .ri-meta i { font-size: 11px; }
+        .riwayat-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .badge-proses  { background: #f0a500; color: #fff; }
+        .badge-selesai { background: #27ae60; color: #fff; }
+        .badge-batal   { background: #e53e3e; color: #fff; }
+        .riwayat-empty { text-align: center; padding: 60px 20px; color: #8ba5c4; }
+        .riwayat-empty i { font-size: 52px; display: block; margin-bottom: 14px; opacity: 0.35; }
+        .riwayat-empty p { font-size: 15px; }
+        body.dark-mode .riwayat-header  { background: #243B5A; }
+        body.dark-mode .riwayat-card    { background: #243B5A; }
+        body.dark-mode .riwayat-icon    { background: #36537C; }
+        body.dark-mode .riwayat-info .ri-meta { color: #8ba5c4; }
+    </style>
+</head>
+<body>
+<div class="phone">
+
+    <div class="riwayat-header">
+        <a href="/dashboard" class="riwayat-back">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1>Riwayat</h1>
+    </div>
+
+    <div class="riwayat-content">
+        {% if bookings %}
+            {% for booking in bookings %}
+            <div class="riwayat-card" onclick="window.location.href='/detail/{{ booking.id }}'">
+                <div class="riwayat-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="riwayat-info">
+                    <h2>{{ booking.jenis_servis.replace('_', ' ').title() if booking.jenis_servis else 'Servis' }}</h2>
+                    <div class="ri-meta">
+                        <i class="fa-solid fa-motorcycle"></i>
+                        <span>{{ booking.motor | default('-', true) }}</span>
+                        {% if booking.tanggal %}
+                            <span>·</span>
+                            <i class="fa-regular fa-calendar"></i>
+                            <span>{{ booking.tanggal }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% set st = booking.status | lower | default('') %}
+                <span class="riwayat-badge {% if st in ['selesai', 'done'] %}badge-selesai{% elif st in ['batal', 'dibatalkan'] %}badge-batal{% else %}badge-proses{% endif %}">
+                    {{ booking.status }}
+                </span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="riwayat-empty">
+                <i class="fa-regular fa-clock"></i>
+                <p>Belum ada riwayat servis</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="navbar">
+        <a href="/dashboard" class="nav-item">
+            <i class="fa-solid fa-house"></i><span>Beranda</span>
+        </a>
+        <a href="/booking" class="nav-item">
+            <i class="fa-solid fa-ticket"></i><span>Servis</span>
+        </a>
+        <a href="/sparepart" class="nav-item">
+            <i class="fa-solid fa-screwdriver-wrench"></i><span>Sparepart</span>
+        </a>
+        <a href="/riwayat" class="nav-item active">
+            <i class="fa-regular fa-clock"></i><span>Riwayat</span>
+        </a>
+    </div>
+
+</div>
+<script>
+(function(){ if(localStorage.getItem('darkMode')==='1') document.body.classList.add('dark-mode'); })();
+</script>
+</body>
+</html>
