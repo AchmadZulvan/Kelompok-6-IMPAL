@@ -1,0 +1,71 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="search-bar mb-3">
+    <form method="GET" style="display:flex; gap:10px;">
+        <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="🔍 Cari pelanggan..."
+            value="{{ keyword if keyword else '' }}"
+        >
+        <button class="btn btn-primary">Cari</button>
+        <a href="/pelanggan" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
+<div class="table-box">
+
+    <div class="table-header">
+        <div>
+            <h2>Data Pelanggan</h2>
+            <p class="table-subtitle">Daftar seluruh pelanggan bengkel</p>
+        </div>
+        <a href="/tambah_pelanggan" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Tambah Pelanggan
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:55px;">No</th>
+                <th>Nama</th>
+                <th>Alamat</th>
+                <th>Telepon</th>
+                <th style="width:130px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in data %}
+        <tr>
+            <td class="td-center">{{ loop.index }}</td>
+            <td>{{ p.nama }}</td>
+            <td>{{ p.alamat }}</td>
+            <td>{{ p.telepon }}</td>
+            <td>
+                {% if p.source == 'admin' %}
+                <a href="/edit_pelanggan/{{ p.id }}" class="btn btn-warning btn-sm">Edit</a>
+
+                <a href="/hapus_pelanggan/{{ p.source }}/{{ p.id }}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Hapus data pelanggan ini?')">
+                    Hapus
+                </a>
+
+                {% else %}
+                <span style="color:gray;font-size:12px;">
+                    User Registrasi
+                </span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

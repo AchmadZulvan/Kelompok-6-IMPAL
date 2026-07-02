@@ -1,0 +1,27 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="table-box">
+    <h2>Detail Sparepart</h2>
+    <table>
+        <tr>
+            <th>Sparepart</th>
+            <th>Qty</th>
+            <th>Harga</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for s in sparepart %}
+        <tr>
+            <td>{{ s.nama_sparepart }}</td>
+            <td>{{ s.qty }}</td>
+            <td>Rp {{ "{:,.0f}".format(s.harga|float).replace(",", ".") if s.harga else "0" }}</td>
+            <td>Rp {{ "{:,.0f}".format(s.subtotal|float).replace(",", ".") if s.subtotal else "0" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h3>
+        Total :
+        Rp {{ "{:,.0f}".format(total|float).replace(",", ".") }}
+    </h3>
+</div>
+{% endblock %}

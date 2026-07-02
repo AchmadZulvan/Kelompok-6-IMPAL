@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register Admin</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Poppins,sans-serif;
+    background:linear-gradient(135deg,#1565c0,#42a5f5);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    width:500px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.card h1{
+    text-align:center;
+    color:#1565c0;
+    margin-bottom:25px;
+}
+
+.form-control{
+    width:100%;
+    padding:14px;
+    margin-top:8px;
+    margin-bottom:18px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.password-box{
+    position:relative;
+}
+
+.password-box input{
+    width:100%;
+    padding:14px 50px 14px 14px;
+    margin-top:8px;
+    margin-bottom:18px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.toggle-password{
+    position:absolute;
+    right:15px;
+    top:45%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:20px;
+    user-select:none;
+}
+
+.btn{
+    width:100%;
+    background:#1565c0;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#0d47a1;
+}
+
+.login-link{
+    text-align:center;
+    margin-top:15px;
+}
+
+.login-link a{
+    color:#1565c0;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <h1>🔧 Register Admin</h1>
+
+    <form method="POST">
+
+        <label>Nama</label>
+
+        <input
+            type="text"
+            name="nama"
+            class="form-control"
+            required
+        >
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            class="form-control"
+            required
+        >
+
+        <label>Password</label>
+
+        <div class="password-box">
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+
+            <span
+                class="toggle-password"
+                onclick="togglePassword()"
+                title="Lihat Password"
+            >
+                👁️
+            </span>
+
+        </div>
+
+        <button class="btn" type="submit">
+            Daftar
+        </button>
+
+    </form>
+
+    <div class="login-link">
+
+        Sudah punya akun?
+
+        <a href="/login">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+        password.type = "text";
+    }else{
+        password.type = "password";
+    }
+
+}
+
+</script>
+
+</body>
+</html>

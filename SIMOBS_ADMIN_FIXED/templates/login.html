@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login SIMOBS</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#1e3c72,#2a5298);
+        }
+
+        .login-card{
+            width:450px;
+            background:#fff;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,.2);
+        }
+
+        .logo{
+            text-align:center;
+            font-size:48px;
+            margin-bottom:10px;
+        }
+
+        h1{
+            text-align:center;
+            color:#2563eb;
+            margin-bottom:25px;
+        }
+
+        .alert{
+            background:#fee2e2;
+            color:#dc2626;
+            padding:12px;
+            border-radius:10px;
+            margin-bottom:20px;
+            font-weight:600;
+            text-align:center;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
+        }
+
+        .form-control{
+            width:100%;
+            padding:14px;
+            border:1px solid #ddd;
+            border-radius:12px;
+            margin-bottom:20px;
+            font-size:15px;
+        }
+
+        .password-box{
+            position:relative;
+        }
+
+        .password-box input{
+            width:100%;
+            padding:14px 50px 14px 14px;
+            border:1px solid #ddd;
+            border-radius:12px;
+            margin-bottom:20px;
+            font-size:15px;
+        }
+
+        .toggle-password{
+            position:absolute;
+            right:15px;
+            top:40%;
+            transform:translateY(-50%);
+            cursor:pointer;
+            font-size:20px;
+            user-select:none;
+        }
+
+        .btn{
+            width:100%;
+            border:none;
+            padding:14px;
+            background:#2563eb;
+            color:white;
+            border-radius:12px;
+            cursor:pointer;
+            font-size:16px;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .btn:hover{
+            background:#1d4ed8;
+        }
+
+        .register{
+            text-align:center;
+            margin-top:20px;
+        }
+
+        .register a{
+            color:#2563eb;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        .register a:hover{
+            text-decoration:underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+
+    <div class="logo">🔧</div>
+
+    <h1>SIMOBS</h1>
+
+    {% if error %}
+    <div class="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            class="form-control"
+            required
+        >
+
+        <label>Password</label>
+
+        <div class="password-box">
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+
+            <span
+                class="toggle-password"
+                onclick="togglePassword()"
+                title="Lihat Password"
+            >
+                👁️
+            </span>
+
+        </div>
+
+        <button type="submit" class="btn">
+            Login
+        </button>
+
+    </form>
+
+    <div class="register">
+        Belum punya akun?
+        <a href="/register">Register</a>
+    </div>
+
+</div>
+
+<script>
+function togglePassword() {
+
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+        password.type = "text";
+    }else{
+        password.type = "password";
+    }
+
+}
+</script>
+
+</body>
+</html>

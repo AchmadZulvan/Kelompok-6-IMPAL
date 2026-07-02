@@ -1,0 +1,300 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div style="padding:25px;">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+    ">
+
+        <h2 style="
+            margin:0;
+            font-size:32px;
+            font-weight:700;
+            color:#111827;
+        ">
+            Data Sparepart
+        </h2>
+
+        <button
+            onclick="toggleForm()"
+            style="
+                background:#22c55e;
+                color:white;
+                border:none;
+                padding:12px 20px;
+                border-radius:10px;
+                cursor:pointer;
+                font-weight:600;
+            "
+        >
+            + Tambah Sparepart
+        </button>
+
+    </div>
+
+    <div id="formTambah"
+         style="
+            display:none;
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            margin-bottom:20px;
+            box-shadow:0 4px 15px rgba(0,0,0,.08);
+         ">
+
+        <form action="/tambah_sparepart" method="POST">
+
+            <div style="
+                display:grid;
+                grid-template-columns:2fr 1.2fr 1fr 1fr;
+                gap:15px;
+            ">
+
+                <input
+                    type="text"
+                    name="nama_sparepart"
+                    placeholder="Nama Sparepart"
+                    required
+                    style="
+                        padding:12px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                    "
+                >
+
+                <select
+                    name="kategori"
+                    required
+                    style="
+                        padding:12px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                    "
+                >
+                    <option value="">Pilih Kategori</option>
+                    <option value="Oli">Oli</option>
+                    <option value="Busi">Busi</option>
+                    <option value="Kampas Rem">Kampas Rem</option>
+                    <option value="Kampas Kopling">Kampas Kopling</option>
+                    <option value="Filter">Filter</option>
+                    <option value="Aki">Aki</option>
+                    <option value="Ban">Ban</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+
+                <input
+                    type="number"
+                    name="stok"
+                    placeholder="Stok"
+                    required
+                    style="
+                        padding:12px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                    "
+                >
+
+                <input
+                    type="number"
+                    name="harga"
+                    placeholder="Harga"
+                    required
+                    style="
+                        padding:12px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                    "
+                >
+
+            </div>
+
+            <div style="margin-top:15px;">
+
+                <button
+                    type="submit"
+                    style="
+                        background:#2563eb;
+                        color:white;
+                        border:none;
+                        padding:12px 20px;
+                        border-radius:10px;
+                        cursor:pointer;
+                        font-weight:600;
+                    "
+                >
+                    Simpan
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div style="
+        display:flex;
+        justify-content:flex-end;
+        margin-bottom:20px;
+    ">
+
+        <form method="GET"
+              action="/sparepart"
+              style="
+                display:flex;
+                gap:10px;
+                flex-wrap:wrap;
+              ">
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="🔍 Cari sparepart..."
+                value="{{ keyword }}"
+                style="
+                    padding:10px 15px;
+                    width:260px;
+                    border:1px solid #d1d5db;
+                    border-radius:10px;
+                "
+            >
+
+            <select
+                name="kategori"
+                style="
+                    padding:10px;
+                    border:1px solid #d1d5db;
+                    border-radius:10px;
+                "
+            >
+                <option value="">Semua Kategori</option>
+                <option value="Oli" {% if kategori=='Oli' %}selected{% endif %}>Oli</option>
+                <option value="Busi" {% if kategori=='Busi' %}selected{% endif %}>Busi</option>
+                <option value="Kampas Rem" {% if kategori=='Kampas Rem' %}selected{% endif %}>Kampas Rem</option>
+                <option value="Kampas Kopling" {% if kategori=='Kampas Kopling' %}selected{% endif %}>Kampas Kopling</option>
+                <option value="Filter" {% if kategori=='Filter' %}selected{% endif %}>Filter</option>
+                <option value="Aki" {% if kategori=='Aki' %}selected{% endif %}>Aki</option>
+                <option value="Ban" {% if kategori=='Ban' %}selected{% endif %}>Ban</option>
+            </select>
+
+            <button
+                type="submit"
+                style="
+                    background:#2563eb;
+                    color:white;
+                    border:none;
+                    padding:10px 20px;
+                    border-radius:10px;
+                    cursor:pointer;
+                "
+            >
+                Cari
+            </button>
+
+            <a href="/sparepart"
+               style="
+                    background:#64748b;
+                    color:white;
+                    text-decoration:none;
+                    padding:10px 20px;
+                    border-radius:10px;
+               ">
+                Reset
+            </a>
+
+        </form>
+
+    </div>
+
+    <table style="
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        border-radius:15px;
+        overflow:hidden;
+        box-shadow:0 4px 15px rgba(0,0,0,.08);
+    ">
+
+        <thead>
+            <tr style="
+                background:#2563eb;
+                color:white;
+            ">
+                <th style="padding:15px;">ID</th>
+                <th style="padding:15px;">Nama Sparepart</th>
+                <th style="padding:15px;">Kategori</th>
+                <th style="padding:15px;">Stok</th>
+                <th style="padding:15px;">Harga</th>
+                <th style="padding:15px;">Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item in data %}
+        <tr style="border-bottom:1px solid #eee;">
+
+            <td style="padding:15px; text-align:center;">{{ loop.index }}</td>
+
+            <td style="padding:15px;">{{ item.nama_sparepart }}</td>
+
+            <td style="padding:15px;">
+                <span style="
+                    background:#dbeafe;
+                    color:#1e40af;
+                    padding:6px 12px;
+                    border-radius:20px;
+                    font-size:12px;
+                    font-weight:600;
+                ">
+                    {{ item.kategori }}
+                </span>
+            </td>
+
+            <td style="padding:15px;">{{ item.stok }}</td>
+
+            <td style="padding:15px;">
+                Rp {{ "{:,.0f}".format(item.harga|float).replace(",", ".") if item.harga else '0' }}
+            </td>
+
+            <td style="padding:15px;">
+
+                <a href="/edit_sparepart/{{ item.id }}"
+                   class="btn btn-warning">
+                    Edit
+                </a>
+
+                <a href="/hapus_sparepart/{{ item.id }}"
+                   class="btn btn-danger"
+                   onclick="return confirm('Yakin ingin menghapus data ini?')">
+                    Hapus
+                </a>
+
+            </td>
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+function toggleForm() {
+    const form = document.getElementById('formTambah');
+
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+    } else {
+        form.style.display = 'none';
+    }
+}
+</script>
+
+{% endblock %}

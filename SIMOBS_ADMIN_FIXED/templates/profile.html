@@ -1,0 +1,23 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div style="background:white;padding:30px;border-radius:15px;">
+
+    <h2>Profil Admin</h2>
+
+    <hr>
+
+    <p>
+        <strong>Nama :</strong>
+        {{ session.get('nama','-') }}
+    </p>
+
+    <p>
+        <strong>Username :</strong>
+        {{ session.get('username','-') }}
+    </p>
+
+</div>
+
+{% endblock %}

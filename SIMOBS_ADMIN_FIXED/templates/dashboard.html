@@ -1,0 +1,48 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="dashboard-grid">
+
+    <a href="/pelanggan" class="card-link">
+        <div class="card pelanggan">
+            <div class="card-icon"><i class="fa fa-users"></i></div>
+            <div class="card-body">
+                <h3>Total Pelanggan</h3>
+                <h1>{{ pelanggan }}</h1>
+            </div>
+        </div>
+    </a>
+
+    <a href="/booking" class="card-link">
+        <div class="card booking">
+            <div class="card-icon"><i class="fa fa-wrench"></i></div>
+            <div class="card-body">
+                <h3>Total Booking</h3>
+                <h1>{{ booking }}</h1>
+            </div>
+        </div>
+    </a>
+
+    <a href="/sparepart" class="card-link">
+        <div class="card sparepart">
+            <div class="card-icon"><i class="fa fa-box"></i></div>
+            <div class="card-body">
+                <h3>Total Sparepart</h3>
+                <h1>{{ sparepart }}</h1>
+            </div>
+        </div>
+    </a>
+
+    <a href="/admin" class="card-link">
+        <div class="card admin">
+            <div class="card-icon"><i class="fa fa-user-shield"></i></div>
+            <div class="card-body">
+                <h3>Total Admin</h3>
+                <h1>{{ total_admin }}</h1>
+            </div>
+        </div>
+    </a>
+</div>
+
+{% endblock %}

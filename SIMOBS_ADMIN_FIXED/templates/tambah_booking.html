@@ -1,0 +1,77 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="form-box">
+
+    <h2>Tambah Booking</h2>
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label>Nama Pelanggan</label>
+            <input type="text" name="nama_pelanggan" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Motor</label>
+            <input type="text" name="motor" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Keluhan</label>
+            <textarea name="keluhan" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+    <label>Sparepart Diganti</label>
+
+    <textarea
+        name="sparepart_diganti"
+        class="form-control"
+        rows="4"
+        placeholder="Contoh:
+        Oli MPX 2
+        Busi NGK
+        Filter Udara"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Total Sparepart (Rp)</label>
+
+    <input type="number"
+           name="total_sparepart"
+           class="form-control"
+           placeholder="Contoh: 128000">
+</div>
+
+        <div class="form-group">
+            <label>Mekanik</label>
+            <input type="text" name="mekanik" class="form-control" placeholder="Nama mekanik">
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+
+            <select name="status" class="form-control">
+
+                <option>Menunggu</option>
+                <option>Diproses</option>
+                <option>Selesai</option>
+
+            </select>
+
+        </div>
+
+        <button class="btn btn-primary">
+            Simpan Booking
+        </button>
+
+        <a href="/booking" class="btn btn-danger">
+            Kembali
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
